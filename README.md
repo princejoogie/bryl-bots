@@ -2,13 +2,11 @@
 
 A list of community-tailored discord bots
 
-Prefix: `>`
-
 ---
 
 ## Available Commands
 
-1. suggestion-bot
+1. suggestion-bot | Prefix: `>`
 
    - `suggest <string> : void`
    - `list : Numbered list of suggestions`
