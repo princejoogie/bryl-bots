@@ -8,7 +8,12 @@ Prefix: `>`
 
 ## Available Commands
 
-1. `suggest <string> : void`
-2. `list : Numbered list of suggestions`
-3. `list mine : List of users suggestions`
-4. `vote <number> : void`
+1. suggestion-bot
+
+   - `suggest <string> : void`
+   - `list : Numbered list of suggestions`
+   - `list mine : List of users suggestions`
+   - `vote <number> : void`
+
+2. mee6
+   - `TODO`
