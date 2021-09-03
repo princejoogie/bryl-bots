@@ -1,0 +1,28 @@
+{
+  "name": "mee6",
+  "version": "1.0.0",
+  "description": "mee6 clone, adds features from premium mee6",
+  "main": "index.js",
+  "scripts": {
+    "watch": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
+    "dev": "cross-env NODE_ENV=development ts-node src/index.ts",
+    "start": "cross-env NODE_ENV=production node dist/src/index.js",
+    "build": "rimraf ./dist && tsc"
+  },
+  "author": "Prince Carlo Juguilon",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.7.10",
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.12",
+    "rimraf": "^3.0.2",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "discord.js": "^13.1.0",
+    "dotenv": "^10.0.0",
+    "firebase": "^9.0.1",
+    "fs": "^0.0.1-security"
+  }
+}
