@@ -55,7 +55,7 @@ client.on("message", (msg) => {
             (currDate.getTime() - dbDate.getTime()) / 1000
           );
 
-          if (difference > 60) {
+          if (difference > 10) {
             const xpGain = Math.floor(Math.random() * 10) + 15;
             getXpNeeded(level, xp).then((xpNeeded) => {
               console.log("------------------------");
