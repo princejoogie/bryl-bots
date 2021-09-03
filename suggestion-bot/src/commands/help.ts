@@ -9,7 +9,7 @@ module.exports = (msg: Discord.Message) => {
   reply += ">list mine\n";
   reply += "  - Lists all YOUR suggestions\n";
   reply += ">vote <number>\n";
-  reply += "  - Vote a suggestion (use after !list)\n";
+  reply += "  - Vote a suggestion (use after >list)\n";
   reply += "```";
   msg.channel.send(reply);
 };
