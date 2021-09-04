@@ -1,7 +1,7 @@
 {
-  "name": "mee69",
+  "name": "goojie",
   "version": "1.0.0",
-  "description": "mee69 clone, adds features from premium mee6",
+  "description": "multipurpose bot",
   "main": "index.js",
   "scripts": {
     "watch": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
