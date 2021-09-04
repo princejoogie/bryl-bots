@@ -4,7 +4,7 @@ import FS from "fs";
 import { BASE_DIR } from "../constants";
 import { db, timestamp, toServerDate } from "./utils/firebase";
 import { getTimeDifference, giveXp } from "./utils/magicalFunction";
-import { getDbConfig, refreshDbConfig } from "./utils/dbConstants";
+import { getDbConfig, refreshDbConfig } from "./utils/dbConfig";
 
 export const client = new Client();
 const dotenv = require("dotenv");

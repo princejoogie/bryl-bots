@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { refreshDbConfig } from "../utils/dbConstants";
+import { refreshDbConfig } from "../utils/dbConfig";
 import { db } from "../utils/firebase";
 
 interface Props {

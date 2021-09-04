@@ -1,5 +1,8 @@
 import { Message } from "discord.js";
-import { levelUpResponse as lur, prefix as _prefix } from "./mee6-config.json";
+import {
+  levelUpResponse as lur,
+  prefix as _prefix,
+} from "./goojie-config.json";
 import { db } from "./firebase";
 
 let prefix = _prefix;

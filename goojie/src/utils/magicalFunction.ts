@@ -15,7 +15,7 @@
 
 import { timestamp, firebase } from "./firebase";
 import { Message } from "discord.js";
-import { getDbConfig } from "./dbConstants";
+import { getDbConfig } from "./dbConfig";
 import { client } from "../index";
 
 export const getXpNeeded = async (currentLevel: number, currentXp: number) => {
