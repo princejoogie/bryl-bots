@@ -1,3 +1,4 @@
 {
-  "levelUpResponse": "NICE --USER--, you just leveled up to level --LEVEL--!"
+  "levelUpResponse": "NICE --USER--, you just leveled up to level --LEVEL--!",
+  "prefix": "$"
 }

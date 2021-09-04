@@ -8,8 +8,8 @@ interface Props {
 }
 
 const setPrefix = ({ msg, prefix }: Props) => {
-  db.collection("config")
-    .doc("goojie")
+  db.collection("guilds")
+    .doc(msg.guild?.id)
     .set(
       {
         prefix: prefix.trim(),
@@ -17,7 +17,7 @@ const setPrefix = ({ msg, prefix }: Props) => {
       { merge: true }
     )
     .then(() => {
-      refreshDbConfig()
+      refreshDbConfig(msg)
         .then(() => {
           msg.reply(`successfully changed prefix to ${prefix.trim()}.`);
         })

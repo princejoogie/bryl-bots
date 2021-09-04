@@ -1,21 +1,22 @@
-import { prefix as _prefix } from "../../config.json";
-import { levelUpResponse } from "./mee6-config.json";
-import { db, firebase } from "./firebase";
+import { Message } from "discord.js";
+import { levelUpResponse as lur, prefix as _prefix } from "./mee6-config.json";
+import { db } from "./firebase";
 
 let prefix = _prefix;
-let mee6LevelUpResponse = levelUpResponse;
-let data: firebase.firestore.DocumentData | undefined = undefined;
+let levelUpResponse = lur;
+let lurRoomId = "";
 
-export const refreshDbConfig = async () => {
-  const snapshot = await db.collection("config").doc("goojie").get();
-  data = snapshot.data();
+export const refreshDbConfig = async (msg: Message) => {
+  const snapshot = await db.collection("guilds").doc(msg.guild?.id).get();
+  const data = snapshot.data();
 
   if (data) {
     prefix = data.prefix ?? _prefix;
-    mee6LevelUpResponse = data.levelUpResponse ?? levelUpResponse;
+    levelUpResponse = data.levelUpResponse ?? lur;
+    lurRoomId = data.lurRoomId ?? "";
   }
 };
 
 export const getDbConfig = () => {
-  return { prefix, mee6LevelUpResponse, data };
+  return { prefix, levelUpResponse, lurRoomId };
 };

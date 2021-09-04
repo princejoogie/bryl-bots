@@ -8,8 +8,8 @@ interface Props {
 }
 
 const setLur = ({ msg, lur }: Props) => {
-  db.collection("config")
-    .doc("goojie")
+  db.collection("guilds")
+    .doc(msg.guild?.id)
     .set(
       {
         levelUpResponse: lur.trim(),
@@ -17,7 +17,7 @@ const setLur = ({ msg, lur }: Props) => {
       { merge: true }
     )
     .then(() => {
-      refreshDbConfig()
+      refreshDbConfig(msg)
         .then(() => {
           msg.reply("successfully changed lur.");
         })

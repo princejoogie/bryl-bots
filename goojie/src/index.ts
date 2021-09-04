@@ -27,70 +27,66 @@ const commands: string[] = getCommands();
 
 client.once("ready", () => {
   console.clear();
-  refreshDbConfig()
-    .then(() => {
-      console.log(`Running in ${process.env.NODE_ENV}`);
-      console.log("MEE69 Bot running, DO NOT CLOSE!");
-    })
-    .catch(() => {
-      console.log("Cannot establish connection to the Database.");
-    });
+  console.log(`Running in ${process.env.NODE_ENV}`);
+  console.log("MEE69 Bot running, DO NOT CLOSE!");
 });
 
 client.on("message", (msg) => {
-  const { prefix } = getDbConfig();
+  refreshDbConfig(msg).then(() => {
+    const { prefix } = getDbConfig();
 
-  if (msg.content.startsWith(prefix) && !msg.author.bot) {
-    // HANDLING OF COMMANDS
-    let args = msg.content.split(" ");
-    const cmd = args[0].substring(prefix.length, args[0].length);
+    if (msg.content.startsWith(prefix) && !msg.author.bot) {
+      // HANDLING OF COMMANDS
+      let args = msg.content.split(" ");
+      const cmd = args[0].substring(prefix.length, args[0].length);
 
-    if (commands.includes(cmd)) {
-      args.splice(0, 1);
-      const useCommand = require(path.join(
-        BASE_DIR,
-        "src",
-        "commands",
-        `${cmd}${extension}`
-      ));
-      useCommand(msg, args);
-    }
-  } else if (!msg.author.bot) {
-    // HANDLING OF LEVEL UPS
-    const guildRef = db.collection("guilds").doc(msg.guild?.id);
-    const userRef = guildRef.collection("users").doc(msg.author.id);
-
-    guildRef.set(
-      {
-        lastMessageAt: timestamp(),
-      },
-      { merge: true }
-    );
-
-    userRef.get().then((snap) => {
-      if (snap.exists) {
-        // existing member
-        const data = snap.data();
-        if (data) {
-          const { level, xp, lastXpGain } = data;
-
-          const dbDate = new Date(lastXpGain.toDate());
-          const currDate = toServerDate(new Date()).toDate();
-          const difference = getTimeDifference({
-            start: dbDate,
-            end: currDate,
-          });
-
-          if (difference > 60) {
-            giveXp({ level, xp, userRef, msg });
-          }
-        }
-      } else {
-        // new member
-        giveXp({ level: 0, xp: 0, userRef, msg });
+      if (commands.includes(cmd)) {
+        args.splice(0, 1);
+        const useCommand = require(path.join(
+          BASE_DIR,
+          "src",
+          "commands",
+          `${cmd}${extension}`
+        ));
+        useCommand(msg, args);
       }
-    });
-  }
+    } else if (!msg.author.bot) {
+      // HANDLING OF LEVEL UPS
+      const guildRef = db.collection("guilds").doc(msg.guild?.id);
+      const userRef = guildRef.collection("users").doc(msg.author.id);
+
+      guildRef.set(
+        {
+          lastMessageAt: timestamp(),
+        },
+        { merge: true }
+      );
+
+      userRef.get().then((snap) => {
+        if (snap.exists) {
+          // existing member
+          const data = snap.data();
+          if (data) {
+            const { level, xp, lastXpGain } = data;
+
+            const dbDate = new Date(lastXpGain.toDate());
+            const currDate = toServerDate(new Date()).toDate();
+            const difference = getTimeDifference({
+              start: dbDate,
+              end: currDate,
+            });
+
+            if (difference > 60) {
+              giveXp({ level, xp, userRef, msg });
+            }
+          }
+        } else {
+          // new member
+          giveXp({ level: 0, xp: 0, userRef, msg });
+        }
+      });
+    }
+  });
 });
 
 client.login(token);
