@@ -15,6 +15,7 @@
 
 import { timestamp, firebase } from "./firebase";
 import { Message } from "discord.js";
+import { getDbConstants } from "./dbConstants";
 
 export const getXpNeeded = async (currentLevel: number, currentXp: number) => {
   const xpToLevel =
@@ -44,6 +45,7 @@ interface GiveXpProps {
 }
 
 export const giveXp = async ({ level, xp, userRef, msg }: GiveXpProps) => {
+  const { mee6LevelUpResponse } = getDbConstants();
   const xpGain = Math.floor(Math.random() * 10) + 15;
   const xpNeeded = await getXpNeeded(level, xp);
 
@@ -52,9 +54,10 @@ export const giveXp = async ({ level, xp, userRef, msg }: GiveXpProps) => {
 
   if (xpGain >= xpNeeded) {
     newLevel = level + 1;
-    msg.channel.send(
-      `NICE ${msg.author}, you increased you programming skills to level ${newLevel}!`
-    );
+    const message = mee6LevelUpResponse
+      .replace(/__USER__/g, `${msg.author}`)
+      .replace(/__LEVEL__/g, `${newLevel}`);
+    msg.channel.send(message);
   }
 
   console.log({ newLevel, newXp });

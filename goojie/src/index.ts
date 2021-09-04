@@ -5,6 +5,8 @@ import { prefix } from "../config.json";
 import { BASE_DIR } from "../constants";
 import { db, timestamp, toServerDate } from "./utils/firebase";
 import { getTimeDifference, giveXp } from "./utils/magicalFunction";
+import initDbConstants from "./utils/dbConstants";
+
 const client = new Client();
 const dotenv = require("dotenv");
 dotenv.config();
@@ -26,6 +28,7 @@ const commands: string[] = getCommands();
 
 client.once("ready", () => {
   console.clear();
+  initDbConstants();
   console.log(`Running in ${process.env.NODE_ENV}`);
   console.log("MEE69 Bot running, DO NOT CLOSE!");
 });
@@ -46,7 +49,7 @@ client.on("message", (msg) => {
       ));
       useCommand(msg, args);
     }
-  } else {
+  } else if (!msg.author.bot) {
     // HANDLING OF LEVEL UPS
     const guildRef = db.collection("guilds").doc(msg.guild?.id);
     const userRef = guildRef.collection("users").doc(msg.author.id);
@@ -72,11 +75,11 @@ client.on("message", (msg) => {
             end: currDate,
           });
 
-          if (difference > 10) {
-            giveXp({ level, xp, userRef, msg });
-          } else {
-            console.log("can only level up once per minute");
-          }
+          // if (difference > 10) {
+          giveXp({ level, xp, userRef, msg });
+          // } else {
+          //   console.log("can only level up once per minute");
+          // }
         }
       } else {
         // new member
