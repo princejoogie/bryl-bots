@@ -4,22 +4,22 @@ import { db } from "../utils/firebase";
 
 interface Props {
   msg: Message;
-  lur: string;
+  lurRoomId: string;
 }
 
-const setLur = ({ msg, lur }: Props) => {
+const setLurRoomId = ({ msg, lurRoomId }: Props) => {
   db.collection("guilds")
     .doc(msg.guild?.id)
     .set(
       {
-        levelUpResponse: lur,
+        lurRoomId,
       },
       { merge: true }
     )
     .then(() => {
       refreshDbConfig(msg)
         .then(() => {
-          msg.reply("successfully changed lur.");
+          msg.reply(`successfully changed lur room id to ${lurRoomId}.`);
         })
         .catch((err) => {
           msg.reply(`something went wrong. ${err.message}`);
@@ -30,4 +30,4 @@ const setLur = ({ msg, lur }: Props) => {
     });
 };
 
-export default setLur;
+export default setLurRoomId;
