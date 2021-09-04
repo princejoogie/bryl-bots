@@ -6,7 +6,7 @@ import { db, timestamp, toServerDate } from "./utils/firebase";
 import { getTimeDifference, giveXp } from "./utils/magicalFunction";
 import { getDbConfig, refreshDbConfig } from "./utils/dbConstants";
 
-const client = new Client();
+export const client = new Client();
 const dotenv = require("dotenv");
 dotenv.config();
 const token = process.env.BOT_TOKEN;

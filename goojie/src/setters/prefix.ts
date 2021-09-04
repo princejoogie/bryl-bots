@@ -12,14 +12,14 @@ const setPrefix = ({ msg, prefix }: Props) => {
     .doc(msg.guild?.id)
     .set(
       {
-        prefix: prefix.trim(),
+        prefix: prefix,
       },
       { merge: true }
     )
     .then(() => {
       refreshDbConfig(msg)
         .then(() => {
-          msg.reply(`successfully changed prefix to ${prefix.trim()}.`);
+          msg.reply(`successfully changed prefix to ${prefix}.`);
         })
         .catch((err) => {
           msg.reply(`something went wrong. ${err.message}`);

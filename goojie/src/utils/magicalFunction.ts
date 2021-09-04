@@ -16,6 +16,7 @@
 import { timestamp, firebase } from "./firebase";
 import { Message } from "discord.js";
 import { getDbConfig } from "./dbConstants";
+import { client } from "../index";
 
 export const getXpNeeded = async (currentLevel: number, currentXp: number) => {
   const xpToLevel =
@@ -45,7 +46,7 @@ interface GiveXpProps {
 }
 
 export const giveXp = async ({ level, xp, userRef, msg }: GiveXpProps) => {
-  const { levelUpResponse } = getDbConfig();
+  const { levelUpResponse, lurRoomId } = getDbConfig();
   const xpGain = Math.floor(Math.random() * 10) + 15;
   const xpNeeded = await getXpNeeded(level, xp);
 
@@ -57,7 +58,18 @@ export const giveXp = async ({ level, xp, userRef, msg }: GiveXpProps) => {
     const message = levelUpResponse
       .replace(/--USER--/g, `${msg.author}`)
       .replace(/--LEVEL--/g, `${newLevel}`);
-    msg.channel.send(message);
+
+    if (!!lurRoomId) {
+      const channel = msg.guild?.channels.cache.get(lurRoomId);
+
+      if (channel && channel.isText()) {
+        channel.send(message);
+      } else {
+        msg.channel.send(message);
+      }
+    } else {
+      msg.channel.send(message);
+    }
   }
 
   console.log({ newLevel, newXp });
