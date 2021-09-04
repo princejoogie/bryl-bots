@@ -1,11 +1,10 @@
 import { Client } from "discord.js";
 import path from "path";
 import FS from "fs";
-import { prefix } from "../config.json";
 import { BASE_DIR } from "../constants";
 import { db, timestamp, toServerDate } from "./utils/firebase";
 import { getTimeDifference, giveXp } from "./utils/magicalFunction";
-import { refreshDbConfig } from "./utils/dbConstants";
+import { getDbConfig, refreshDbConfig } from "./utils/dbConstants";
 
 const client = new Client();
 const dotenv = require("dotenv");
@@ -39,10 +38,12 @@ client.once("ready", () => {
 });
 
 client.on("message", (msg) => {
+  const { prefix } = getDbConfig();
+
   if (msg.content.startsWith(prefix) && !msg.author.bot) {
     // HANDLING OF COMMANDS
     let args = msg.content.split(" ");
-    const cmd = args[0].substring(1, args[0].length);
+    const cmd = args[0].substring(prefix.length, args[0].length);
 
     if (commands.includes(cmd)) {
       args.splice(0, 1);
