@@ -45,7 +45,7 @@ interface GiveXpProps {
 }
 
 export const giveXp = async ({ level, xp, userRef, msg }: GiveXpProps) => {
-  const { mee6LevelUpResponse } = getDbConfig();
+  const { levelUpResponse } = getDbConfig();
   const xpGain = Math.floor(Math.random() * 10) + 15;
   const xpNeeded = await getXpNeeded(level, xp);
 
@@ -54,7 +54,7 @@ export const giveXp = async ({ level, xp, userRef, msg }: GiveXpProps) => {
 
   if (xpGain >= xpNeeded) {
     newLevel = level + 1;
-    const message = mee6LevelUpResponse
+    const message = levelUpResponse
       .replace(/--USER--/g, `${msg.author}`)
       .replace(/--LEVEL--/g, `${newLevel}`);
     msg.channel.send(message);

@@ -1,6 +1,5 @@
 import Discord from "discord.js";
-import { refreshDbConfig } from "../utils/dbConstants";
-import { db } from "../utils/firebase";
+import { setPrefix, setLur } from "../setters";
 
 const properties = ["lur", "prefix"] as const;
 
@@ -11,36 +10,25 @@ module.exports = (msg: Discord.Message, args?: string[]) => {
     const property = args[0];
     switch (property as ValidProps) {
       case "lur": {
-        const _message = args.slice(1, args.length).join(" ");
+        const _lur = args.slice(1, args.length).join(" ");
 
-        if (_message.includes("--USER--") && _message.includes("--LEVEL--")) {
-          db.collection("config")
-            .doc("goojie")
-            .set(
-              {
-                levelUpResponse: _message.trim(),
-              },
-              { merge: true }
-            )
-            .then(() => {
-              refreshDbConfig()
-                .then(() => {
-                  msg.reply("successfully changed lur.");
-                })
-                .catch((err) => {
-                  msg.reply(`Something went wrong. ${err.message}`);
-                });
-            })
-            .catch((err) => {
-              msg.reply(`Something went wrong. ${err.message}`);
-            });
+        if (_lur.includes("--USER--") && _lur.includes("--LEVEL--")) {
+          setLur({ msg, lur: _lur });
         } else {
-          msg.reply("missing `--USER--` and `--LEVEL--` in string");
+          msg.reply("missing `--USER--` or `--LEVEL--` in argument.");
         }
 
         break;
       }
       case "prefix": {
+        const _prefix = args.slice(1, args.length).join(" ");
+
+        if (_prefix && !_prefix.match(/[a-z]/i)) {
+          setPrefix({ msg, prefix: _prefix });
+        } else {
+          msg.reply("invalid prefix.");
+        }
+
         break;
       }
       default: {
