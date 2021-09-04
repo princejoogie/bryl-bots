@@ -5,7 +5,7 @@ import { prefix } from "../config.json";
 import { BASE_DIR } from "../constants";
 import { db, timestamp, toServerDate } from "./utils/firebase";
 import { getTimeDifference, giveXp } from "./utils/magicalFunction";
-import initDbConstants from "./utils/dbConstants";
+import { refreshDbConfig } from "./utils/dbConstants";
 
 const client = new Client();
 const dotenv = require("dotenv");
@@ -28,9 +28,14 @@ const commands: string[] = getCommands();
 
 client.once("ready", () => {
   console.clear();
-  initDbConstants();
-  console.log(`Running in ${process.env.NODE_ENV}`);
-  console.log("MEE69 Bot running, DO NOT CLOSE!");
+  refreshDbConfig()
+    .then(() => {
+      console.log(`Running in ${process.env.NODE_ENV}`);
+      console.log("MEE69 Bot running, DO NOT CLOSE!");
+    })
+    .catch(() => {
+      console.log("Cannot establish connection to the Database.");
+    });
 });
 
 client.on("message", (msg) => {
@@ -75,11 +80,11 @@ client.on("message", (msg) => {
             end: currDate,
           });
 
-          // if (difference > 10) {
-          giveXp({ level, xp, userRef, msg });
-          // } else {
-          //   console.log("can only level up once per minute");
-          // }
+          if (difference > 60) {
+            giveXp({ level, xp, userRef, msg });
+          } else {
+            console.log("can only level up once per minute");
+          }
         }
       } else {
         // new member
