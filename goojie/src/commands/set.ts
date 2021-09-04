@@ -1,6 +1,5 @@
 import Discord from "discord.js";
-import { refreshDbConfig } from "../utils/dbConstants";
-import { db } from "../utils/firebase";
+import setLur from "../setters/lur";
 
 const properties = ["lur", "prefix"] as const;
 
@@ -14,28 +13,9 @@ module.exports = (msg: Discord.Message, args?: string[]) => {
         const _message = args.slice(1, args.length).join(" ");
 
         if (_message.includes("--USER--") && _message.includes("--LEVEL--")) {
-          db.collection("config")
-            .doc("goojie")
-            .set(
-              {
-                levelUpResponse: _message.trim(),
-              },
-              { merge: true }
-            )
-            .then(() => {
-              refreshDbConfig()
-                .then(() => {
-                  msg.reply("successfully changed lur.");
-                })
-                .catch((err) => {
-                  msg.reply(`Something went wrong. ${err.message}`);
-                });
-            })
-            .catch((err) => {
-              msg.reply(`Something went wrong. ${err.message}`);
-            });
+          setLur({ msg, lur: _message });
         } else {
-          msg.reply("missing `--USER--` and `--LEVEL--` in string");
+          msg.reply("missing `--USER--` or `--LEVEL--` in argument");
         }
 
         break;

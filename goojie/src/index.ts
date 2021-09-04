@@ -82,8 +82,6 @@ client.on("message", (msg) => {
 
           if (difference > 60) {
             giveXp({ level, xp, userRef, msg });
-          } else {
-            console.log("can only level up once per minute");
           }
         }
       } else {
