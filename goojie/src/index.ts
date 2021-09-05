@@ -100,7 +100,11 @@ client.on("message", (msg) => {
           }
         } else {
           // new member
-          giveXp({ level: 0, xp: 0, userRef, msg });
+          userRef.set({
+            level: 0,
+            xp: 0,
+            lastXpGain: timestamp(),
+          });
         }
       });
     }
