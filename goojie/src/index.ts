@@ -5,6 +5,7 @@ import { BASE_DIR } from "../constants";
 import { db, timestamp, toServerDate } from "./utils/firebase";
 import { getTimeDifference, giveXp } from "./utils/magicalFunction";
 import { getDbConfig, refreshDbConfig } from "./utils/dbConfig";
+import { getWelcomeImage } from "./puppeteer/welcomeMessage";
 
 export const client = new Client();
 const dotenv = require("dotenv");
@@ -29,6 +30,23 @@ client.once("ready", () => {
   console.clear();
   console.log(`Running in ${process.env.NODE_ENV}`);
   console.log("MEE69 Bot running, DO NOT CLOSE!");
+});
+
+client.on("guildMemberAdd", (member) => {
+  const channel = member.guild.channels.cache.get("883952847962640394");
+
+  console.log("new user joined");
+  if (channel && channel.isText()) {
+    getWelcomeImage(member).then((imageUrl) => {
+      if (imageUrl) {
+        channel.send(`Welcome aboard ${member.user}`, {
+          files: [imageUrl],
+        });
+      } else {
+        channel.send(`Welcome aboard ${member.user}`);
+      }
+    });
+  }
 });
 
 client.on("message", (msg) => {

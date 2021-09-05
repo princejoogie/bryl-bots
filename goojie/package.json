@@ -24,6 +24,7 @@
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
     "firebase": "^8.10.0",
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "puppeteer": "^10.2.0"
   }
 }
